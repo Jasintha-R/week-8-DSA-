@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+
+// function to create a max heap from a subtree rooted at "root"
+void heapify(int arr[], int n, int root)
+{
+    int largest = root; // Initialize largest as root node
+    int left = 2 * root + 1; // Index of left child node
+    int right = 2 * root + 2; // Index of right child node
+ 
+    // If left child is larger than root node
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+ 
+    // If right child is larger than largest node so far
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+ 
+    // If largest node is not root node
+    if (largest != root) {
+        // Swap root node with largest node
+        swap(arr[root], arr[largest]);
+ 
+        // Recursively heapify the affected sub-tree
+        heapify(arr, n, largest);
+    }
+}
+
+// function to perform heap sort on an input array
+void heapSort(int arr[], int n)
+{
+    // Build max heap by calling heapify on each non-leaf node
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+ 
+    // Extract elements from the heap one by one and place at the end of the array
+    for (int i = n - 1; i > 0; i--) {
+        // Move current root node to the end of the array
+        swap(arr[0], arr[i]);
+ 
+        // Call heapify on the reduced heap to maintain max heap property
+        heapify(arr, i, 0);
+    }
+}
+
+/* function to print the contents of an array */
+void displayArray(int arr[], int n)
+{
+    for (int i=0; i<n; ++i)
+        cout << arr[i] << " ";
+    cout << "\n";
+}
+
+// main program
+int main()
+{
+    int n;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+
+    int heap_arr[n];
+    cout << "Enter " << n << " integers:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> heap_arr[i];
+    }
+
+    cout << "Input array:\n";
+    displayArray(heap_arr, n);
+
+    // Sort the array using heap sort algorithm
+    heapSort(heap_arr, n);
+
+    cout << "Sorted array:\n";
+    displayArray(heap_arr, n);
+}
